@@ -236,7 +236,7 @@ export default function StoresPage() {
       </Container>
       
       {/* Discounts Section */}
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+      {/* <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
         <Typography variant="h5" fontWeight="bold" display="flex" alignItems="center">
           Discounts 4 U! <span role="img" aria-label="winking face" style={{ marginLeft: '8px' }}>😉</span>
         </Typography>
@@ -252,7 +252,7 @@ export default function StoresPage() {
             </IconButton>
           </Box>
         </Box>
-      </Box>
+      </Box> */}
       
       <Container maxWidth="xl" sx={{ py: 3 }}>
         <Box sx={{ display: 'flex', gap: 4 }}>
@@ -263,6 +263,11 @@ export default function StoresPage() {
           />
           
           <Box sx={{ flex: 1 }}>
+            {/* Discounts Section */}
+            <Box sx={{ mb: 4 }}>
+              <SectionHeader title="Discounts 4 U!" emoji="😉" />
+              <StoreGrid stores={localDelicacies} />
+            </Box>
             {/* Free Drinks Section */}
             <Box sx={{ mb: 4 }}>
               <SectionHeader title="Free drinks for you!" emoji="🍻" />

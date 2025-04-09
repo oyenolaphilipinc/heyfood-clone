@@ -94,7 +94,7 @@ export default function Footer() {
             <Box sx={{ display: 'flex', mb: 3 }}>
               <StoreButton href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
                 <Image
-                  src="/app-store-badge.svg"
+                  src="/google-play-badge.svg"
                   alt="Download on the App Store"
                   width={135}
                   height={40}
