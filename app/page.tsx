@@ -1,9 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Box, Container } from '@mui/material';
+import { Box, Container, Typography, IconButton, Grid } from '@mui/material';
 import { Store, Category } from '@/types';
 import { fetchStores, fetchCategories } from '@/lib/api';
+import FoodBanner from '../components/FoodBanner';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import NavigationTabs from '@/components/NavigationTabs';
 import SectionHeader from '@/components/SectionHeader';
 import StoreGrid from '@/components/StoreGrid';
@@ -32,6 +35,11 @@ export default function StoresPage() {
     
     loadData();
   }, []);
+
+  const handleOrderNow = (storeName: string): void => {
+    console.log(`Order now clicked for ${storeName}`);
+    // Add your order handling logic here
+  };
 
   // Sample categories data
   const sampleCategories: Category[] = [
@@ -177,6 +185,74 @@ export default function StoresPage() {
   return (
     <Box sx={{ minHeight: '100vh', backgroundColor: '#fff' }}>
       <NavigationTabs categories={categories.length ? categories : sampleCategories} />
+
+      {/* Banners Section */}
+      <Container maxWidth="xl" sx={{ mb: 4 }}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr' }, gap: 3 }}>
+          <Box>
+            <FoodBanner
+              title="Jollof Square"
+              subtitle="Enjoy discounts on your orders"
+              bgColor="#FF7A00"
+              textColor="#FFFFFF"
+              imageSrc="https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=800&h=600&fit=crop"
+              discounts={[
+                { percent: '10%', location: 'Agbowo' },
+                { percent: '5%', location: 'Sango' },
+                { percent: '5%', location: 'Mokola' }
+              ]}
+              onOrderNow={() => handleOrderNow("Jollof Square")}
+            />
+          </Box>
+          
+          <Box>
+            <FoodBanner
+              title="Oje Market"
+              subtitle="Fresh local ingredients"
+              bgColor="#291811"
+              textColor="#FFFFFF"
+              imageSrc="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&h=600&fit=crop"
+              freeDelivery={true}
+              deliveryTimeFrom="12:00 PM"
+              deliveryTimeTo="5:00 PM"
+              onOrderNow={() => handleOrderNow("Oje Market")}
+            />
+          </Box>
+          
+          <Box>
+            <FoodBanner
+              title="Bodija Market"
+              subtitle="Best market deals"
+              bgColor="#A73922"
+              textColor="#FFFFFF"
+              imageSrc="https://images.unsplash.com/photo-1567521464027-f127ff144326?w=800&h=600&fit=crop"
+              freeDelivery={true}
+              deliveryTimeFrom="12:00 PM"
+              deliveryTimeTo="5:00 PM"
+              onOrderNow={() => handleOrderNow("Bodija Market")}
+            />
+          </Box>
+        </Box>
+      </Container>
+      
+      {/* Discounts Section */}
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+        <Typography variant="h5" fontWeight="bold" display="flex" alignItems="center">
+          Discounts 4 U! <span role="img" aria-label="winking face" style={{ marginLeft: '8px' }}>😉</span>
+        </Typography>
+        
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Typography sx={{ mr: 2 }}>See all</Typography>
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <IconButton size="small" sx={{ bgcolor: '#f0f0f0' }}>
+              <ArrowBackIosNewIcon fontSize="small" />
+            </IconButton>
+            <IconButton size="small" sx={{ bgcolor: '#f0f0f0' }}>
+              <ArrowForwardIosIcon fontSize="small" />
+            </IconButton>
+          </Box>
+        </Box>
+      </Box>
       
       <Container maxWidth="xl" sx={{ py: 3 }}>
         <Box sx={{ display: 'flex', gap: 4 }}>
