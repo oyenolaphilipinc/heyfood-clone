@@ -1,30 +1,19 @@
-// pages/StoresPage.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
-import { 
-  Box, 
-  Container, 
-  Typography, 
-  Grid, 
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  FormControl,
-  IconButton
-} from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Box, Container } from '@mui/material';
 import { Store, Category } from '@/types';
 import { fetchStores, fetchCategories } from '@/lib/api';
-import CategoryScroller from '@/components/CategoryScroller';
-import StoreCard from '@/components/StoreCard';
+import NavigationTabs from '@/components/NavigationTabs';
+import SectionHeader from '@/components/SectionHeader';
+import StoreGrid from '@/components/StoreGrid';
+import Sidebar from '@/components/Sidebar';
 
 export default function StoresPage() {
   const [stores, setStores] = useState<Store[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [sortOption, setSortOption] = useState('popular');
   const [isLoading, setIsLoading] = useState(true);
+  const [sortBy, setSortBy] = useState('mostPopular');
   
   useEffect(() => {
     const loadData = async () => {
@@ -44,253 +33,180 @@ export default function StoresPage() {
     loadData();
   }, []);
 
-  const handleSortChange = (value: string) => {
-    setSortOption(value);
-  };
+  // Sample categories data
+  const sampleCategories: Category[] = [
+    { id: "1", name: "Rice", icon: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=128&h=128&fit=crop&q=80" },
+    { id: "2", name: "Chicken", icon: "https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=128&h=128&fit=crop&q=80" },
+    { id: "3", name: "Shawarma", icon: "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=128&h=128&fit=crop&q=80" },
+    { id: "4", name: "Juice", icon: "https://images.unsplash.com/photo-1621263764928-df1444c5e859?w=128&h=128&fit=crop&q=80" },
+    { id: "5", name: "Goat Meat", icon: "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=128&h=128&fit=crop&q=80" },
+    { id: "6", name: "Amala", icon: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=128&h=128&fit=crop&q=80" },
+    { id: "7", name: "Fastfood", icon: "https://images.unsplash.com/photo-1561758033-d89a9ad46330?w=128&h=128&fit=crop&q=80" },
+    { id: "8", name: "Soup Bowl", icon: "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=128&h=128&fit=crop&q=80" },
+    { id: "9", name: "Sandwich", icon: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=128&h=128&fit=crop&q=80" },
+    { id: "10", name: "Grills", icon: "https://images.unsplash.com/photo-1544025162-d76694265947?w=128&h=128&fit=crop&q=80" },
+    { id: "11", name: "Grocery", icon: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=128&h=128&fit=crop&q=80" },
+    { id: "12", name: "Ice Cream", icon: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=128&h=128&fit=crop&q=80" }
+  ];
 
-  // Sample store data for demonstration (use this if your API isn't ready)
-  const sampleStores = [
+  // Sample store data
+  const sampleStores: Store[] = [
     {
-      id: 1,
+      id: "1",
       name: "MunchLunch Cafe",
       categories: ["Chicken", "Fastfood", "Rice"],
-      imageUrl: "/api/placeholder/400/224",
+      imageUrl: "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=400&h=224&fit=crop&q=80",
       rating: 3.4,
       reviewCount: 27,
       promoTag: "5% off order"
     },
     {
-      id: 2,
+      id: "2",
       name: "Westmead Royal Bites",
       categories: ["Rice", "Pounded Yam"],
-      imageUrl: "/api/placeholder/400/224",
+      imageUrl: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=224&fit=crop&q=80",
       rating: 3.7,
       reviewCount: 401,
       promoTag: "Free delivery, up to ₦500"
     },
     {
-      id: 3,
+      id: "3",
       name: "Calabar Igbo Restaurant",
       categories: ["Rice", "Goat meat", "Fastfood"],
-      imageUrl: "/api/placeholder/400/224",
+      imageUrl: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&h=224&fit=crop&q=80",
       rating: 0.5,
       reviewCount: 1,
       promoTag: "₦500 off order"
-    },
-    {
-      id: 4,
-      name: "Lolu's Cuisine On The Go",
-      categories: ["Fastfood", "Spaghetti", "Seafood"],
-      imageUrl: "/api/placeholder/400/224",
-      rating: 4.1,
-      reviewCount: 123
-    },
-    {
-      id: 5,
-      name: "Bankylolas Mobile Ace",
-      categories: ["Small Chops", "Chicken", "Grills"],
-      imageUrl: "/api/placeholder/400/224", 
-      rating: 4.3,
-      reviewCount: 89
-    },
-    {
-      id: 6,
-      name: "Pasta Pan Ringroad",
-      categories: ["Chicken", "Fastfood"],
-      imageUrl: "/api/placeholder/400/224",
-      rating: 3.9,
-      reviewCount: 55
     }
   ];
 
+  // Local Delicacies data
+  const localDelicacies: Store[] = [
+    {
+      id: "7",
+      name: "Ola Mummy",
+      categories: ["Chicken", "Rice", "Soup bowl", "Vegetable"],
+      imageUrl: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=224&fit=crop&q=80",
+      rating: 4.2,
+      reviewCount: 6528,
+      promoTag: null
+    },
+    {
+      id: "8",
+      name: "Iya Meta",
+      categories: ["Juice", "Pounded Yam", "Rice", "Spaghetti"],
+      imageUrl: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=400&h=224&fit=crop&q=80",
+      rating: 4.3,
+      reviewCount: 27142,
+      promoTag: null
+    },
+    {
+      id: "9",
+      name: "Amala Skye (Ose Olorun Complex)",
+      categories: ["Goat meat", "Pounded Yam", "Soup bowl"],
+      imageUrl: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&h=224&fit=crop&q=80",
+      rating: 4.3,
+      reviewCount: 5799,
+      promoTag: null
+    }
+  ];
+
+  // All Restaurants data
+  const allRestaurants: Store[] = [
+    {
+      id: "10",
+      name: "Cravings cuisine",
+      categories: ["Rice", "Chicken", "Goat meat"],
+      imageUrl: "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=400&h=224&fit=crop&q=80",
+      rating: 5.0,
+      reviewCount: 0,
+      promoTag: null
+    },
+    {
+      id: "11",
+      name: "Julia foods",
+      categories: ["Rice", "Chicken", "Pastries"],
+      imageUrl: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=224&fit=crop&q=80",
+      rating: 5.0,
+      reviewCount: 0,
+      promoTag: null
+    },
+    {
+      id: "12",
+      name: "Habib/Rufaidah yoghurt & ice cream",
+      categories: ["Yoghurt"],
+      imageUrl: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&h=224&fit=crop&q=80",
+      rating: 4.7,
+      reviewCount: 3,
+      promoTag: null
+    },
+    {
+      id: "13",
+      name: "Item 7 Go Iwo-Road",
+      categories: ["Local Dishes"],
+      imageUrl: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&h=224&fit=crop&q=80",
+      rating: 4.5,
+      reviewCount: 3149,
+      promoTag: null
+    },
+    {
+      id: "14",
+      name: "Try Best Taste Spot",
+      categories: ["Local Dishes", "Fast Food"],
+      imageUrl: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=224&fit=crop&q=80",
+      rating: 5.0,
+      reviewCount: 0,
+      promoTag: null
+    },
+    {
+      id: "15",
+      name: "TopSuccess Bar & Lounge",
+      categories: ["Juice"],
+      imageUrl: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=224&fit=crop&q=80",
+      rating: 5.0,
+      reviewCount: 0,
+      promoTag: null
+    }
+  ];
+
+  const handleSortChange = (value: string) => {
+    setSortBy(value);
+    // Implement sorting logic here
+  };
+
   return (
-    <Box sx={{ display: 'flex', flex: 1 }}>
-      {/* Left Sidebar */}
-      <Box sx={{ 
-        width: 200, 
-        p: 2,
-        borderRight: '1px solid #f0f0f0',
-        display: { xs: 'none', md: 'block' }
-      }}>
-        <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
-          Sort
-        </Typography>
-        <FormControl component="fieldset">
-          <RadioGroup 
-            value={sortOption} 
-            onChange={(e) => handleSortChange(e.target.value)}
-            sx={{ '& .MuiFormControlLabel-root': { mb: 2 } }}
-          >
-            <FormControlLabel 
-              value="popular" 
-              control={
-                <Radio 
-                  sx={{ 
-                    color: 'text.secondary',
-                    '&.Mui-checked': {
-                      color: 'primary.main',
-                    },
-                  }} 
-                />
-              } 
-              label={
-                <Typography variant="body1" fontWeight={sortOption === 'popular' ? 'bold' : 'regular'}>
-                  Most Popular
-                </Typography>
-              } 
-            />
-            <FormControlLabel 
-              value="nearest" 
-              control={
-                <Radio 
-                  sx={{ 
-                    color: 'text.secondary',
-                    '&.Mui-checked': {
-                      color: 'primary.main',
-                    },
-                  }} 
-                />
-              } 
-              label={
-                <Typography variant="body1" fontWeight={sortOption === 'nearest' ? 'bold' : 'regular'}>
-                  Nearest
-                </Typography>
-              } 
-            />
-            <FormControlLabel 
-              value="highest" 
-              control={
-                <Radio 
-                  sx={{ 
-                    color: 'text.secondary',
-                    '&.Mui-checked': {
-                      color: 'primary.main',
-                    },
-                  }} 
-                />
-              } 
-              label={
-                <Typography variant="body1" fontWeight={sortOption === 'highest' ? 'bold' : 'regular'}>
-                  Highest rated
-                </Typography>
-              } 
-            />
-            <FormControlLabel 
-              value="newest" 
-              control={
-                <Radio 
-                  sx={{ 
-                    color: 'text.secondary',
-                    '&.Mui-checked': {
-                      color: 'primary.main',
-                    },
-                  }} 
-                />
-              } 
-              label={
-                <Typography variant="body1" fontWeight={sortOption === 'newest' ? 'bold' : 'regular'}>
-                  Newest
-                </Typography>
-              } 
-            />
-            <FormControlLabel 
-              value="rated" 
-              control={
-                <Radio 
-                  sx={{ 
-                    color: 'text.secondary',
-                    '&.Mui-checked': {
-                      color: 'primary.main',
-                    },
-                  }} 
-                />
-              } 
-              label={
-                <Typography variant="body1" fontWeight={sortOption === 'rated' ? 'bold' : 'regular'}>
-                  Most Rated
-                </Typography>
-              } 
-            />
-          </RadioGroup>
-        </FormControl>
-      </Box>
-
-      {/* Main Content Area */}
-      <Box sx={{ flex: 1, p: 2 }}>
-        {/* Stores Header */}
-        <Box sx={{ mb: 2 }}>
-          <Typography variant="h5" fontWeight="bold" component="h1">
-            All Stores
-          </Typography>
-          <Typography color="text.secondary" variant="body1">
-            (634 Stores)
-          </Typography>
-        </Box>
-
-        {/* Stores Grid */}
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-          {(stores.length ? stores : sampleStores).slice(3, 6).map((store) => (
-            <Box key={store.id} sx={{ flex: '1 1 calc(33.333% - 16px)', minWidth: '300px' }}>
-              <StoreCard store={store} />
-            </Box>
-          ))}
-        </Box>
-        
-        {/* Promo Banner */}
-        <Box sx={{ 
-          my: 4, 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center' 
-        }}>
-          <Typography variant="h5" fontWeight="bold" component="h2" sx={{ display: 'flex', alignItems: 'center' }}>
-            Free drinks for you! <span role="img" aria-label="cheers" style={{ marginLeft: '8px' }}>🍻</span>
-          </Typography>
+    <Box sx={{ minHeight: '100vh', backgroundColor: '#fff' }}>
+      <NavigationTabs categories={categories.length ? categories : sampleCategories} />
+      
+      <Container maxWidth="xl" sx={{ py: 3 }}>
+        <Box sx={{ display: 'flex', gap: 4 }}>
+          <Sidebar 
+            totalStores={635} 
+            sortBy={sortBy}
+            onSortChange={handleSortChange}
+          />
           
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography 
-              variant="body1" 
-              component="span" 
-              sx={{ mr: 2, fontWeight: 'medium', cursor: 'pointer' }}
-            >
-              See all
-            </Typography>
-            <Box sx={{ display: 'flex', gap: 1 }}>
-              <IconButton
-                size="small"
-                sx={{ 
-                  width: 32,
-                  height: 32,
-                  border: '1px solid #e0e0e0',
-                  color: 'text.secondary'
-                }}
-              >
-                <ArrowBackIcon fontSize="small" />
-              </IconButton>
-              <IconButton
-                size="small"
-                sx={{ 
-                  width: 32,
-                  height: 32,
-                  border: '1px solid #e0e0e0',
-                  color: 'text.secondary'
-                }}
-              >
-                <ArrowForwardIcon fontSize="small" />
-              </IconButton>
+          <Box sx={{ flex: 1 }}>
+            {/* Free Drinks Section */}
+            <Box sx={{ mb: 4 }}>
+              <SectionHeader title="Free drinks for you!" emoji="🍻" />
+              <StoreGrid stores={sampleStores.slice(0, 3)} />
+            </Box>
+
+            {/* Local Delicacies Section */}
+            <Box sx={{ mb: 4 }}>
+              <SectionHeader title="Local Delicacies" emoji="🍜" />
+              <StoreGrid stores={localDelicacies} showClosingTime />
+            </Box>
+
+            {/* All Restaurants Section */}
+            <Box sx={{ mb: 4 }}>
+              <SectionHeader title="All Restaurants" />
+              <StoreGrid stores={allRestaurants} showClosingTime />
             </Box>
           </Box>
         </Box>
-        
-        {/* More Stores */}
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-          {(stores.length ? stores : sampleStores).slice(3, 6).map((store) => (
-            <Box key={store.id} sx={{ flex: '1 1 calc(33.333% - 16px)', minWidth: '300px' }}>
-              <StoreCard store={store} />
-            </Box>
-          ))}
-        </Box>
-      </Box>
+      </Container>
     </Box>
   );
 }

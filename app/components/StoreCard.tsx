@@ -1,10 +1,8 @@
-import { Box, Typography, Card } from '@mui/material';
+import { Box, Typography, Card, CardMedia } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import StarIcon from '@mui/icons-material/Star';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import { Store } from '@/types';
-import Link from 'next/link';
-import Image from 'next/image';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   width: '100%',
@@ -57,56 +55,62 @@ export default function StoreCard({ store }: Props) {
   };
 
   return (
-    <Link href={`/store/${store.id}`} passHref>
-      <StyledCard>
-        <ImageContainer>
-          <Image
-            src={store.imageUrl}
-            alt={store.name}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            style={{ objectFit: 'cover' }}
-          />
-          {store.promoTag && (
-            <PromoTag>
-              <LocalOfferIcon sx={{ fontSize: 16 }} />
-              {store.promoTag}
-            </PromoTag>
-          )}
-        </ImageContainer>
+    <StyledCard>
+      <ImageContainer>
+        <CardMedia
+          component="img"
+          image={store.imageUrl}
+          alt={store.name}
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover'
+          }}
+        />
+        {store.promoTag && (
+          <PromoTag>
+            <LocalOfferIcon sx={{ fontSize: 16 }} />
+            {store.promoTag}
+          </PromoTag>
+        )}
+      </ImageContainer>
 
-        <Box sx={{ p: 2 }}>
-          <Typography 
-            variant="h6" 
-            component="h3" 
-            sx={{ 
-              mb: 1, 
-              fontWeight: 'bold',
-              fontSize: { xs: '1rem', sm: '1.25rem' }
-            }}
-          >
-            {store.name}
-          </Typography>
+      <Box sx={{ p: 2 }}>
+        <Typography 
+          variant="h6" 
+          component="h3" 
+          sx={{ 
+            mb: 1, 
+            fontWeight: 'bold',
+            fontSize: { xs: '1rem', sm: '1.25rem' }
+          }}
+        >
+          {store.name}
+        </Typography>
 
-          <Box sx={{ display: 'flex', gap: 1, mb: 1.5, flexWrap: 'wrap' }}>
-            {store.categories.map((category, index) => (
-              <Typography
-                key={index}
-                variant="body2"
-                color="text.secondary"
-                sx={{ 
-                  fontSize: { xs: '0.8rem', sm: '0.875rem' },
-                  '&:not(:last-child):after': {
-                    content: '","',
-                    marginLeft: '2px'
-                  }
-                }}
-              >
-                {category}
-              </Typography>
-            ))}
-          </Box>
+        <Box sx={{ display: 'flex', gap: 1, mb: 1.5, flexWrap: 'wrap' }}>
+          {store.categories.map((category, index) => (
+            <Typography
+              key={index}
+              variant="body2"
+              color="text.secondary"
+              sx={{ 
+                fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                '&:not(:last-child):after': {
+                  content: '","',
+                  marginLeft: '2px'
+                }
+              }}
+            >
+              {category}
+            </Typography>
+          ))}
+        </Box>
 
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Box sx={{ 
             display: 'flex', 
             alignItems: 'center', 
@@ -131,7 +135,7 @@ export default function StoreCard({ store }: Props) {
             {store.reviewCount}+ Ratings
           </Typography>
         </Box>
-      </StyledCard>
-    </Link>
+      </Box>
+    </StyledCard>
   );
 } 

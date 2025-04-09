@@ -1,43 +1,36 @@
 'use client';
+
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
-// Create a theme instance.
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#00C853', // HeyFood green color
+      main: '#00B37A',
     },
     background: {
-      default: '#FFFFFF',
-    },
-    text: {
-      primary: '#000000',
-      secondary: '#666666',
+      default: '#fff',
     },
   },
   typography: {
-    fontFamily: '"Inter", "Roboto", "Arial", sans-serif',
-    button: {
-      textTransform: 'none',
-    },
+    fontFamily: 'inherit',
   },
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          textTransform: 'none',
         },
       },
     },
   },
 });
 
-export default function ThemeRegistry({ children }: { children: React.ReactNode }) {
+export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       {children}
     </ThemeProvider>
   );
-}
+} 

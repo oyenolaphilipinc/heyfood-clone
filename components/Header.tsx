@@ -1,287 +1,128 @@
-'use client';
-
-import { useState } from 'react';
 import { 
   AppBar, 
   Toolbar, 
-  Box, 
   IconButton, 
-  Button, 
+  Typography, 
   InputBase, 
-  Container,
-  Dialog,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Drawer
+  Button,
+  Box,
+  Badge
 } from '@mui/material';
-import Link from 'next/link';
+import { styled } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import SearchIcon from '@mui/icons-material/Search';
-import CloseIcon from '@mui/icons-material/Close';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import RestaurantIcon from '@mui/icons-material/Restaurant';
-import { Category } from '@/types';
-import { fetchCategories } from '@/lib/api';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Image from 'next/image';
+
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: '#f5f5f5',
+  marginRight: theme.spacing(2),
+  marginLeft: theme.spacing(3),
+  width: '100%',
+  maxWidth: '600px',
+  display: 'flex',
+  alignItems: 'center'
+}));
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#757575'
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  width: '100%',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1.5, 1, 1.5, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    width: '100%',
+    '&::placeholder': {
+      color: '#757575'
+    }
+  },
+}));
+
+const LocationButton = styled(Button)(({ theme }) => ({
+  color: '#000',
+  textTransform: 'none',
+  padding: theme.spacing(1, 2),
+  marginRight: theme.spacing(2),
+  '&:hover': {
+    backgroundColor: 'transparent'
+  }
+}));
 
 export default function Header() {
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [categories, setCategories] = useState<Category[]>([]);
-  
-  // Load categories when search dialog opens
-  const handleSearchOpen = async () => {
-    setSearchOpen(true);
-    if (categories.length === 0) {
-      try {
-        const data = await fetchCategories();
-        setCategories(data);
-      } catch (error) {
-        console.error('Failed to fetch categories:', error);
-      }
-    }
-  };
-  
-  const handleSearchClose = () => {
-    setSearchOpen(false);
-  };
-  
-  const toggleDrawer = (open: boolean) => {
-    setDrawerOpen(open);
-  };
-
   return (
-    <>
-      <AppBar position="sticky" color="default" elevation={0} sx={{ bgcolor: 'white', borderBottom: '1px solid #EAEAEA' }}>
-        <Container maxWidth="lg">
-          <Toolbar disableGutters sx={{ minHeight: '70px' }}>
-            {/* Mobile Menu Icon */}
-            <IconButton 
-              edge="start" 
-              color="inherit" 
-              aria-label="menu"
-              onClick={() => toggleDrawer(true)}
-              sx={{ mr: 1 }}
-            >
-              <MenuIcon />
-            </IconButton>
-            
-            {/* Logo */}
-            <Box 
-              component={Link} 
-              href="/"
-              sx={{ 
-                display: 'flex',
-                alignItems: 'center',
-                textDecoration: 'none',
-                color: 'inherit',
-                mr: 2
-              }}
-            >
-              <Box 
-                component="img" 
-                src="/logo-circle-green.svg"
-                alt="HeyFood" 
-                sx={{ 
-                  width: 40, 
-                  height: 40, 
-                  borderRadius: '50%', 
-                  bgcolor: '#ffffff'
-                }} 
-              />
-            </Box>
-            
-            {/* Location Button */}
-            <Button 
-              startIcon={<LocationOnOutlinedIcon />} 
-              sx={{ 
-                color: 'text.primary',
-                fontWeight: 'bold',
-                textTransform: 'none',
-                mr: 2
-              }}
-            >
-              Set Location
-            </Button>
-            
-            {/* Search Bar */}
-            <Box 
-              onClick={handleSearchOpen}
-              sx={{ 
-                flex: 1,
-                display: 'flex',
-                alignItems: 'center',
-                bgcolor: '#F5F5F5',
-                borderRadius: 50,
-                px: 2,
-                height: 40,
-                cursor: 'pointer'
-              }}
-            >
-              <SearchIcon sx={{ color: 'text.secondary', mr: 1 }} />
-              <InputBase
-                placeholder="Search restaurants or food"
-                readOnly
-                sx={{ 
-                  flex: 1,
-                  fontSize: '0.9rem',
-                  color: 'text.secondary'
-                }}
-              />
-            </Box>
-            
-            {/* Auth & Cart */}
-            <Box sx={{ display: 'flex', ml: 2 }}>
-              <Button 
-                sx={{ 
-                  color: 'text.primary',
-                  fontWeight: 'bold',
-                  textTransform: 'none',
-                  mr: 1
-                }}
-              >
-                SIGN IN
-              </Button>
-              
-              <Button 
-                variant="contained" 
-                startIcon={<ShoppingCartOutlinedIcon />}
-                sx={{ 
-                  bgcolor: 'black',
-                  color: 'white',
-                  textTransform: 'none',
-                  borderRadius: 50,
-                  '&:hover': {
-                    bgcolor: 'black',
-                    opacity: 0.9
-                  }
-                }}
-              >
-                CART • 0
-              </Button>
-            </Box>
-          </Toolbar>
-        </Container>
-      </AppBar>
-      
-      {/* Service Tabs (Restaurant/Grocery) */}
-      <Box sx={{ borderBottom: '1px solid #EAEAEA', py: 1 }}>
-        <Container maxWidth="lg">
-          <Box sx={{ display: 'flex', gap: 2 }}>
-            <Button
-              component={Link}
-              href="/"
-              sx={{
-                bgcolor: '#000',
-                color: '#fff',
-                borderRadius: 50,
-                px: 3,
-                textTransform: 'none',
-                fontWeight: 'medium',
-                '&:hover': {
-                  bgcolor: '#000',
-                  opacity: 0.9
-                }
-              }}
-              startIcon={<RestaurantIcon />}
-            >
-              Restaurants
-            </Button>
-            
-            <Button
-              sx={{
-                color: '#000',
-                textTransform: 'none',
-                fontWeight: 'medium'
-              }}
-              startIcon={
-                <Box 
-                  component="svg" 
-                  sx={{ width: 24, height: 24 }}
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-4 12H8v-1h8v1zm0-3H8v-1h8v1zm0-3H8v-1h8v1zm-10-5V4h8v3h-8z" />
-                </Box>
-              }
-            >
-              Grocery
-            </Button>
+    <AppBar position="fixed" color="default" elevation={1} sx={{ backgroundColor: 'white' }}>
+      <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+          
+          <Box sx={{ position: 'relative', width: 40, height: 40, mr: 2 }}>
+            <Image
+              src="https://images.unsplash.com/photo-1556911220-bff31c812dba?w=40&h=40&fit=crop&q=80"
+              alt="HeyFood"
+              width={40}
+              height={40}
+            />
           </Box>
-        </Container>
-      </Box>
-      
-      {/* Search Dialog */}
-      <Dialog
-        fullWidth
-        maxWidth="md"
-        open={searchOpen}
-        onClose={handleSearchClose}
-        sx={{
-          '& .MuiDialog-paper': {
-            m: 0,
-            width: '100%',
-            maxWidth: '100%',
-            position: 'absolute',
-            top: 0,
-            borderRadius: 0,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-          }
-        }}
-      >
-        <Box sx={{ p: 1, display: 'flex', alignItems: 'center' }}>
-          <SearchIcon sx={{ color: 'text.secondary', mx: 1 }} />
-          <InputBase
-            autoFocus
+
+          <LocationButton
+            startIcon={<LocationOnIcon sx={{ color: '#000' }} />}
+          >
+            Set Location
+          </LocationButton>
+        </Box>
+
+        <Search>
+          <SearchIconWrapper>
+            <SearchIcon />
+          </SearchIconWrapper>
+          <StyledInputBase
             placeholder="Search restaurants or food"
-            sx={{ 
-              flex: 1,
-              fontSize: '1rem'
-            }}
+            inputProps={{ 'aria-label': 'search' }}
           />
-          <IconButton onClick={handleSearchClose}>
-            <CloseIcon />
+        </Search>
+
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Button
+            color="inherit"
+            sx={{
+              mr: 2,
+              color: '#000',
+              fontWeight: 500,
+              '&:hover': {
+                backgroundColor: 'transparent'
+              }
+            }}
+          >
+            SIGN IN
+          </Button>
+          
+          <IconButton color="inherit">
+            <Badge badgeContent={0} color="primary">
+              <ShoppingCartIcon sx={{ color: '#000' }} />
+            </Badge>
           </IconButton>
         </Box>
-        
-        <Box sx={{ p: 2 }}>
-          <List>
-            {categories.map((category) => (
-              <ListItem 
-                key={category.id} 
-                button 
-                sx={{ 
-                  py: 2,
-                  borderBottom: '1px solid #F5F5F5'
-                }}
-              >
-                <ListItemIcon sx={{ minWidth: 40 }}>
-                  <RestaurantIcon />
-                </ListItemIcon>
-                <ListItemText primary={category.name} />
-              </ListItem>
-            ))}
-          </List>
-        </Box>
-      </Dialog>
-      
-      {/* Mobile Drawer */}
-      <Drawer
-        anchor="left"
-        open={drawerOpen}
-        onClose={() => toggleDrawer(false)}
-      >
-        <Box sx={{ width: 250 }} role="presentation">
-          <List>
-            {['Home', 'Restaurants', 'Grocery', 'My Orders', 'Profile', 'Help'].map((text) => (
-              <ListItem button key={text} onClick={() => toggleDrawer(false)}>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
-        </Box>
-      </Drawer>
-    </>
+      </Toolbar>
+    </AppBar>
   );
-}
+} 

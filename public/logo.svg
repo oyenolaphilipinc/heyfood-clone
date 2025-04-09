@@ -1,0 +1,8 @@
+<svg width="145" height="40" viewBox="0 0 145 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M20 0H0V40H20V0Z" fill="#00B37A"/>
+  <path d="M40 0H20V40H40V0Z" fill="#00B37A" fill-opacity="0.8"/>
+  <path d="M60 0H40V40H60V0Z" fill="#00B37A" fill-opacity="0.6"/>
+  <text x="70" y="28" font-family="Arial" font-size="24" font-weight="bold" fill="#000">
+    Heyfood
+  </text>
+</svg> 

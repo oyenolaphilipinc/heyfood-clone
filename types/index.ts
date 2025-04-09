@@ -1,10 +1,10 @@
 export interface Store {
   id: string;
   name: string;
+  categories: string[];
   imageUrl: string;
   rating: number;
   reviewCount: number;
-  categories: string[];
   promoTag: string | null;
 }
 

@@ -69,40 +69,40 @@ export async function fetchCategories(): Promise<Category[]> {
   await new Promise(resolve => setTimeout(resolve, 500));
   
   return [
-    {
-      id: '1',
-      name: 'All',
-      icon: 'restaurant'
-    },
-    {
-      id: '2',
-      name: 'Fast Food',
-      icon: 'fastfood'
-    },
-    {
-      id: '3',
-      name: 'Rice',
-      icon: 'rice'
-    },
-    {
-      id: '4',
-      name: 'Chicken',
-      icon: 'poultry'
-    },
-    {
-      id: '5',
-      name: 'Pizza',
-      icon: 'local_pizza'
-    },
-    {
-      id: '6',
-      name: 'Burgers',
-      icon: 'lunch_dining'
-    },
-    {
-      id: '7',
-      name: 'Drinks',
-      icon: 'local_cafe'
-    }
+    // {
+    //   id: '1',
+    //   name: 'All',
+    //   icon: 'restaurant'
+    // },
+    // {
+    //   id: '2',
+    //   name: 'Fast Food',
+    //   icon: 'fastfood'
+    // },
+    // {
+    //   id: '3',
+    //   name: 'Rice',
+    //   icon: 'rice'
+    // },
+    // {
+    //   id: '4',
+    //   name: 'Chicken',
+    //   icon: 'poultry'
+    // },
+    // {
+    //   id: '5',
+    //   name: 'Pizza',
+    //   icon: 'local_pizza'
+    // },
+    // {
+    //   id: '6',
+    //   name: 'Burgers',
+    //   icon: 'lunch_dining'
+    // },
+    // {
+    //   id: '7',
+    //   name: 'Drinks',
+    //   icon: 'local_cafe'
+    // }
   ];
 }
